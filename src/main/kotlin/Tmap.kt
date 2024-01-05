@@ -3,7 +3,6 @@ class Tmap<T> : Imap<T>, Collection<Pair<String, T>> {
     private val SIZE = 10
     private var list: List<MutableList<Pair<String, T>>> = List(SIZE) { mutableListOf() }
 
-
     override fun put(key: String, value: T): Boolean {
         if(list[hash(key)].isEmpty()){
             //if nothing there add it
@@ -64,12 +63,13 @@ class Tmap<T> : Imap<T>, Collection<Pair<String, T>> {
     }
 
     override fun hash(key: String): Int {
-        println("hash of $key is ${key.hashCode()} and modded is ${key.hashCode() % SIZE}")
-        return key.hashCode() % SIZE
-    }
+        var value = key.hashCode() % SIZE
+        if(value < 0){
+            value *= -1
+        }
+        println("hash of $key is ${key.hashCode()} and modded and normalized is ${value}")
 
-    override fun normalize(): String {
-        TODO("Not yet implemented")
+        return value
     }
 
     override fun contains(element: Pair<String, T>): Boolean {
@@ -85,7 +85,10 @@ class Tmap<T> : Imap<T>, Collection<Pair<String, T>> {
     }
 
     override fun containsAll(elements: Collection<Pair<String, T>>): Boolean {
-        TODO("Not yet implemented")
+       elements.forEach {
+           if(list.flatten().contains(it).not()) return false
+       }
+        return true
     }
 
     override val size: Int
@@ -98,9 +101,4 @@ class Tmap<T> : Imap<T>, Collection<Pair<String, T>> {
     override fun iterator(): Iterator<Pair<String, T>> {
         return list.flatten().iterator()
     }
-
-
-//    override fun normalize(): String {
-//        return hashed.toString()
-//    }
 }

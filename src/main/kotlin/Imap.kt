@@ -4,7 +4,6 @@ interface Imap<T> {
     fun keys(): List<String>
     fun values(): List<T>
     fun hash(key: String): Int
-    fun normalize(): String
     fun containsKey(key: String): Boolean
     fun containsValue(value: T): Boolean
 }
