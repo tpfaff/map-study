@@ -1,1 +1,1 @@
-data class Node<T>(val key: String, val value: T, val left: Node<T>?, val right: Node<T>?)
+data class Node<T>(val key: String, val value: T, var left: Node<T>?, var right: Node<T>?)

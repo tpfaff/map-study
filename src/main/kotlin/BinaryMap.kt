@@ -1,7 +1,11 @@
+import kotlin.random.Random
+
 class BinaryMap<T>: Imap<T>, Collection<Pair<String, T>> {
 
     val SIZE = 10
     private var bList = arrayOfNulls<BinaryTree<T>>(SIZE)
+    //4, 5, 10, 12
+    val INSERT_LOGGING = false
 
     override fun put(key: String, value: T): Boolean {
         if(bList[hash(key)] == null){
@@ -38,7 +42,8 @@ class BinaryMap<T>: Imap<T>, Collection<Pair<String, T>> {
     }
 
     fun uniqueHash(key: String): Int{
-        return key.hashCode()
+        var rand = Random(key.hashCode())
+        return key.hashCode() * rand.nextInt()
 //        var hash = key.hashCode()
 //        if(hash < 0)
 //            hash *= -1
@@ -58,23 +63,37 @@ class BinaryMap<T>: Imap<T>, Collection<Pair<String, T>> {
 
 
     private fun insertNode(root: Node<T>?, child: Node<T>){
-        println("insertNode")
-        var mutableRoot = root
-        if(mutableRoot == null){
-            mutableRoot = child
-            println("set mutableRoot to child")
+        if(INSERT_LOGGING)  println("insertNode")
+//        var mutableRoot = root
+//        if(mutableRoot == null){
+//         //   mutableRoot = child
+//            if(INSERT_LOGGING) println("set mutableRoot to child with value ${child.value}")
+//            return
+//        }
+
+        if(root == null){
+            if(INSERT_LOGGING) println("root is null, returning")
             return
         }
 
         var hashedChildKey = uniqueHash(child.key)
-      //  println("hashedChildKey is $hashedChildKey")
-        if(hashedChildKey < hash(mutableRoot.key)){
-            println("going left")
-            insertNode(mutableRoot.left, child)
+        if(INSERT_LOGGING) println("hashedChildKey is $hashedChildKey")
+        if(hashedChildKey < hash(root.key)){
+            if(INSERT_LOGGING) println("going left")
+            if(root.left == null){
+                if(INSERT_LOGGING) println("inserted left")
+                root.left = child
+            }else {
+                insertNode(root.left, child)
+            }
         }
-        if(hashedChildKey > hash(mutableRoot.key)){
-            println("going right")
-            insertNode(mutableRoot.right, child)
+        if(hashedChildKey >= hash(root.key)){
+            if(INSERT_LOGGING) println("going right")
+            if(root.right == null){
+                root.right = child
+            } else {
+                insertNode(root.right, child)
+            }
         }
     }
 
@@ -91,8 +110,8 @@ class BinaryMap<T>: Imap<T>, Collection<Pair<String, T>> {
     // Define a function to print a binary tree node and its children recursively
     fun printBinaryTree(node: Node<T>?, level: Int = 0) {
         // Print the node value with indentation based on the level
-        println("level is $level")
-        println("X".repeat(level * 4) + node?.value)
+       // println("level is $level")
+        println(" ".repeat((level) * 4) + node?.value)
         // Print the left node with increased level if it is not null
         node?.left?.let { printBinaryTree(it, level + 1) }
         // Print the right node with increased level if it is not null

@@ -5,43 +5,36 @@ fun main(args: Array<String>) {
     // Learn more about running applications: https://www.jetbrains.com/help/idea/running-applications.html.
     println("Program arguments: ${args.joinToString()}")
 
-    val myMap = Tmap<String>()
-    myMap.put("first", "first value")
-    myMap.put("second", "second value")
-
-
-   // printOut(myMap)
-
-    myMap.put("first", "a new first value")
+//    val myMap = Tmap<String>()
+//    myMap.put("first", "first value")
+//    myMap.put("second", "second value")
+//
+//
+//   // printOut(myMap)
+//
+//    myMap.put("first", "a new first value")
 
    // printOut(myMap)
 
 
     val bMap = BinaryMap<String>()
-    bMap.put("first bin", "first bin value")
-    bMap.put("second bin", "second bin value")
-    bMap.put("third bin", "third bin value")
-    bMap.put("four bin", "four bin value")
-    bMap.put("five bin", "five bin value")
-    bMap.put("six bin", "six bin value")
-    bMap.put("seven bin", "seven bin value")
-    bMap.put("eight bin", "eight bin value")
-    bMap.put("nine bin", "nine bin value")
-    bMap.put("ten bin", "ten bin value")
-    bMap.put("eleven bin", "eleven bin value")
-    bMap.put("twelve bin", "twelve bin value")
+    for (i in 1..50){
+        bMap.put("$i", "$i value")
+    }
 
-    printOut(myMap, bMap)
+    printOut(null, bMap)
 
 }
 
-fun printOut(map: Tmap<String>, bMap: BinaryMap<String>){
+fun printOut(map: Tmap<String>?, bMap: BinaryMap<String>){
+    map?.let {
     map.forEach{
         println("Printing... ${it.first} : ${it.second}")
     }
 
     map.keys().forEach{
         println("Printing each key $it")
+    }
     }
 
 //    println( bMap.get("first bin"))
